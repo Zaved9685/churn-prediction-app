@@ -37,7 +37,6 @@ def login_user(username, password):
             return role
 
     return None
-menu = st.sidebar.radio(...)
 
 # Load users
 def load_users():
