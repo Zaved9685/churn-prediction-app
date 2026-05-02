@@ -1,4 +1,6 @@
 import streamlit as st
+if "logged_in" not in st.session_state:
+    st.stop()
 if st.session_state.role == "user":
     st.error("Access denied")
     st.stop()
@@ -25,6 +27,19 @@ st.write("---")
 
 # Upload file
 uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
+if uploaded_file:
+    df = pd.read_csv(uploaded_file)
+
+    preds = model.predict(df)
+    df["Prediction"] = preds
+
+    st.dataframe(df)
+
+    st.download_button(
+        "Download Results",
+        df.to_csv(index=False),
+        "predictions.csv"
+    )
 
 if uploaded_file is not None:
 

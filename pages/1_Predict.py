@@ -1,4 +1,6 @@
 import streamlit as st
+if "logged_in" not in st.session_state:
+    st.stop()
 if "logged_in" not in st.session_state or not st.session_state.logged_in:
     st.warning("Please login first")
     st.stop()
@@ -37,8 +39,7 @@ st.write("---")
 # PREDICT BUTTON
 if st.button("Predict"):
 
-    # Encode inputs
-    input_data = [
+    input_data = [[
         encoders["gender"].transform([gender])[0],
         encoders["Partner"].transform([partner])[0],
         encoders["Contract"].transform([contract])[0],
@@ -46,16 +47,15 @@ if st.button("Predict"):
         tenure,
         monthly,
         total
-    ]
+    ]]
 
-    # Prediction with loader
-    with st.spinner("Analyzing customer data..."):
-        prediction = model.predict([input_data])[0]
+    with st.spinner("Analyzing..."):
+        prediction = model.predict(input_data)[0]
+        proba = model.predict_proba(input_data)[0][1]
 
-    # RESULT
+    st.write(f"### Churn Probability: {proba:.2f}")
+
     if prediction == 1:
-        st.markdown("### ⚠️ High Risk Customer")
-        st.error("This customer is likely to churn.")
+        st.error("⚠️ High Risk Customer")
     else:
-        st.markdown("### ✅ Low Risk Customer")
-        st.success("This customer is likely to stay.")
+        st.success("✅ Low Risk Customer")

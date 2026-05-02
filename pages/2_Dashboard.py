@@ -1,7 +1,23 @@
 import streamlit as st
+if "logged_in" not in st.session_state:
+    st.stop()
 if "logged_in" not in st.session_state or not st.session_state.logged_in:
     st.warning("Please login first")
     st.stop()
+import matplotlib.pyplot as plt
+
+st.metric("Total Customers", len(df))
+st.metric("Churn Rate", f"{df['Churn'].mean()*100:.2f}%")
+
+# Chart 1
+fig, ax = plt.subplots()
+df["Churn"].value_counts().plot(kind="bar", ax=ax)
+st.pyplot(fig)
+
+# Chart 2
+fig2, ax2 = plt.subplots()
+df.groupby("Churn")["tenure"].mean().plot(kind="bar", ax=ax2)
+st.pyplot(fig2)
 st.set_page_config(layout="wide")
 st.subheader("📊 Key Metrics Overview")
 import pandas as pd

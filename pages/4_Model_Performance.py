@@ -1,4 +1,6 @@
 import streamlit as st
+if "logged_in" not in st.session_state:
+    st.stop()
 if st.session_state.role == "user":
     st.error("Access denied")
     st.stop()
@@ -66,8 +68,8 @@ cm = confusion_matrix(y, y_pred)
 # UI
 st.metric("Accuracy", f"{acc*100:.2f}%")
 
-st.write("### Confusion Matrix")
+st.subheader("Confusion Matrix")
 st.write(cm)
 
-st.write("### Classification Report")
+st.subheader("Classification Report")
 st.text(classification_report(y, y_pred))

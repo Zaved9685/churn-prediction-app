@@ -1,6 +1,13 @@
 import streamlit as st
 import sqlite3
 import bcrypt
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(to right, #f5f7fa, #e4ecf7);
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ✅ MUST BE FIRST
 st.set_page_config(page_title="Customer Churn Prediction", layout="wide")
